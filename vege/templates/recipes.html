@@ -8,47 +8,55 @@
 </head>
 <body>
 
-<div class="container">
+<div class="container mt-4">
 
-  <form method = "post" enctype="multipart/form-data">
+  <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-  <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label">recipe Name</label>
-    <input name = "recipe_name" required type="text" class="form-control" >
-  </div>
-  <div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label">description</label>
-    <textarea name="description" required class="form-control" id="description" rows="3" placeholder="Enter description"></textarea>
-  </div>
-  <div class="mb-3">
+    <div class="mb-3">
+      <label class="form-label">Recipe Name</label>
+      <input name="recipe_name" required type="text" class="form-control">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Description</label>
+      <textarea name="description" required class="form-control" rows="3" placeholder="Enter description"></textarea>
+    </div>
+    <div class="mb-3">
       <label for="image" class="form-label">Recipe Image</label>
       <input name="image" type="file" class="form-control" id="image" accept="image/*">
     </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+    <button type="submit" class="btn btn-primary mb-4">Add Recipe</button>
+  </form>
 
-
-
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Name</th>
-      <th scope="col">Discription</th>
-      <th scope="col">Image</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for recipe in Recipes %}
-    <tr>
-      <th scope="row">{{forloop.counter}}</th>
-      <td>{{recipe.recipe_name}}</td>
-      <td>{{recipe.description}}</td>
-      <td>{{recipe.image}}</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+  <table class="table table-bordered align-middle">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Description</th>
+        <th scope="col">Image</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for recipe in Recipes %}
+      <tr>
+        <th scope="row">{{ forloop.counter }}</th>
+        <td>{{ recipe.recipe_name }}</td>
+        <td>{{ recipe.description }}</td>
+        <td>
+          {% if recipe.image %}
+            <img src="/media/{{ recipe.image }}" style="height: 200px; width: 200px; object-fit: cover;">
+          {% else %}
+            <span class="text-muted">No image</span>
+          {% endif %}
+        </td>
+        <td>
+          <a href="/delete_recipe/{{ recipe.id }}" class="btn btn-danger btn-sm">Delete</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 
 </div>
 

@@ -26,6 +26,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('', home, name = "home"),
     path('recipes/', recipes, name = "recipes"),
+    path('delete_recipe/<id>/', delete_recipe, name = "delete_recipes"),
 
     path('otherPage/', otherPage, name = "other Page"),
     path('htmlPage/', htmlpage, name = "html page"),
