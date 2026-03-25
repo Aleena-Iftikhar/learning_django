@@ -20,13 +20,40 @@ def recipes(request):
         image = image,
      )
 
-     return redirect('recipes')
+     return redirect('recipes')            # go to /recipes page
    
+   # --------- Get recipe -----------
    queryset = recipe.objects.all()
    context = {"Recipes": queryset}
 
 
    return render(request, 'recipes.html', context)
+
+
+# ---------- UPDATE recipe --------------
+
+def update_recipe(request, id):
+   queryset = recipe.objects.get(id = id)
+
+   if request.method == "POST":
+      name = request.POST.get('recipe_name')
+      description = request.POST.get("description")
+      image = request.FILES.get("image")
+
+      queryset.recipe_name = name
+      queryset.description = description
+
+      if image:
+         queryset.image = image
+
+      queryset.save()
+      return redirect('recipes')
+
+   context = {'Recipes': queryset}
+   return render(request, 'updateRecipe.html', context)
+
+
+# ---------- DELETE recipe ------------
 
 def delete_recipe(request, id):
    queryset = recipe.objects.get(id = id)
