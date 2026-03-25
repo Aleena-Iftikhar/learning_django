@@ -24,8 +24,11 @@ def recipes(request):
    
    # --------- Get recipe -----------
    queryset = recipe.objects.all()
-   context = {"Recipes": queryset}
 
+   if request.GET.get('search'):
+      queryset = queryset.filter(recipe_name__icontains = request.GET.get('search'))       # 'icontain' will return the recipe in which the search word appear 
+
+   context = {"Recipes": queryset}
 
    return render(request, 'recipes.html', context)
 
