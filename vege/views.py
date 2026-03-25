@@ -3,8 +3,10 @@ from .models import *
 
 # Create your views here.
 
+# ------- CREATE recipes -----------
+
 def recipes(request):
-    if request.method == "POST":
+   if request.method == "POST":
 
      data = request.POST
      name = data.get('recipe_name')
@@ -18,5 +20,9 @@ def recipes(request):
      )
 
      return redirect('recipes')
+   
+   queryset = recipe.objects.all()
+   context = {"Recipes": queryset}
 
-    return render(request, 'recipes.html')
+
+   return render(request, 'recipes.html', context)

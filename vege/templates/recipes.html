@@ -27,6 +27,29 @@
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Discription</th>
+      <th scope="col">Image</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for recipe in Recipes %}
+    <tr>
+      <th scope="row">{{forloop.counter}}</th>
+      <td>{{recipe.recipe_name}}</td>
+      <td>{{recipe.description}}</td>
+      <td>{{recipe.image}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
 </div>
 
 </body>
