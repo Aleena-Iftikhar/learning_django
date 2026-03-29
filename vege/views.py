@@ -1,5 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from django.contrib import messages
+
 from .models import *
 
 # Create your views here.
@@ -63,3 +66,45 @@ def delete_recipe(request, id):
    queryset.delete()
    
    return redirect('recipes')
+
+
+
+
+# ================= AUTHENTICATION ====================
+
+# ----------------- LogIn -------------------------
+
+def loginPage(request):
+   return render(request, 'login.html')
+
+
+# ------------------ Register -------------------
+def register(request):
+   if request.method == "POST":
+      first_name = request.POST.get('firstName')
+      last_name = request.POST.get('lastName')
+      username = request.POST.get('username')
+      password = request.POST.get('password')
+
+      # Check if username already exists
+      if User.objects.filter(username=username).exists():
+         messages.error(request, "Username alreasy exist.")
+         return redirect('/register/')
+
+
+      user = User.objects.create(
+         first_name = first_name,
+         last_name = last_name,
+         username = username,
+      )
+
+      user.set_password(password)
+      user.save()
+
+      messages.success(request, "Account created succesfully.")
+
+      return redirect('/register/')
+
+
+
+   return render(request, 'register.html')

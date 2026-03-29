@@ -28,6 +28,8 @@ urlpatterns = [
     path('recipes/', recipes, name = "recipes"),
     path('delete_recipe/<id>/', delete_recipe, name = "delete_recipes"),
     path('update_recipe/<id>/', update_recipe, name = "update_recipes"),
+    path('login/', loginPage, name = "login_page"),
+    path('register/', register, name = "register_page"),
 
     path('otherPage/', otherPage, name = "other Page"),
     path('htmlPage/', htmlpage, name = "html page"),
