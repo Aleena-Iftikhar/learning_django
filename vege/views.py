@@ -2,13 +2,17 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.contrib.auth import authenticate, login , logout
+from django.contrib.auth.decorators import login_required
 
 from .models import *
 
-# Create your views here.
+# Create your views here. In this file we register our routes(urls).
+
 
 # ------- CREATE recipes -----------
 
+@login_required(login_url='/login/')                        # to access recipe page login is required
 def recipes(request):
    if request.method == "POST":
 
@@ -25,7 +29,8 @@ def recipes(request):
 
      return redirect('recipes')            # go to /recipes page
    
-   # --------- Get recipe -----------
+   # ------------- GET recipe ---------------
+
    queryset = recipe.objects.all()
 
    if request.GET.get('search'):
@@ -36,8 +41,9 @@ def recipes(request):
    return render(request, 'recipes.html', context)
 
 
-# ---------- UPDATE recipe --------------
+# -------------- UPDATE recipe -----------------
 
+@login_required(login_url='/login/') 
 def update_recipe(request, id):
    queryset = recipe.objects.get(id = id)
 
@@ -59,7 +65,7 @@ def update_recipe(request, id):
    return render(request, 'updateRecipe.html', context)
 
 
-# ---------- DELETE recipe ------------
+# ------------- DELETE recipe ---------------
 
 def delete_recipe(request, id):
    queryset = recipe.objects.get(id = id)
@@ -75,6 +81,26 @@ def delete_recipe(request, id):
 # ----------------- LogIn -------------------------
 
 def loginPage(request):
+
+   if request.method == "POST":
+      username = request.POST.get('username')
+      password = request.POST.get('password')
+
+      # Check if username already exists
+      if not User.objects.filter(username=username).exists():
+         messages.error(request, "Username does not exist")
+         return redirect('/login/')
+      
+      user = authenticate(username=username, password=password)
+
+      if user is None:
+         messages.error(request, 'Invalid credentials')
+         return redirect('/login/')
+      
+      else:
+         login(request, user)
+         return redirect('/recipes/')
+      
    return render(request, 'login.html')
 
 
@@ -105,6 +131,11 @@ def register(request):
 
       return redirect('/register/')
 
-
-
    return render(request, 'register.html')
+
+
+# ------------------ LOGOUT ------------------
+def logoutPage(request):
+   logout(request)
+   return redirect('/login/')
+
