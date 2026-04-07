@@ -1,4 +1,4 @@
-from faker import Faker
+from faker import Faker             # to generate fake data
 fake = Faker()
 import random
 from .models import *
@@ -7,7 +7,6 @@ def seed_db(n=10) -> None:
     try:
         for i in range(0, n):
 
-            #[1, 2, 3, 4]
             departments_objs = Department.objects.all()
             random_index = random.randint(0, len(departments_objs)-1)
             student_id = f'STU-0{random.randint(100, 999)}'

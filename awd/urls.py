@@ -20,7 +20,7 @@ from django.contrib import admin
 from django.urls import path
 from home.views import *
 from vege.views import *
-
+from CaseStudies.views import *
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -41,6 +41,10 @@ urlpatterns = [
     path('htmlPage/', htmlpage, name = "html page"),
 
     path('admin/', admin.site.urls),
+
+
+
+    path('actors/', Actor, name = "actors")
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
